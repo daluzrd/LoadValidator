@@ -17,7 +17,7 @@ namespace LoadValidator
                 try
                 {
                     Console.Write("Digite o peso da posição número {0}, ou digite '0' para finalizar a pilha: ", stack.Count + 1);
-                    
+
                     int input = int.Parse(Console.ReadLine());
                     if (input == 0) IsStackFinished = true;
                     else stack.Add(input);

@@ -2,46 +2,48 @@
 
 namespace LoadValidator
 {
+    public class ChangeResult
+    {
+        public int Position1 { get; set; }
+        public int Position2 { get; set; }
+        public ChangeResult(int position1 = 0, int position2 = 0)
+        {
+            Position1 = position1;
+            Position2 = position2;
+        }
+    }
+
     public static class LoadValidator
     {
-        public static bool IsChangeNeeded(List<int> input)
-        {
-            for (int i = input.Count - 1; i >= 0; i--)
-                if (i > 0 && input[i] > input[i - 1]) return true;
 
-            return false;
+        public static ChangeResult PositionsToBeChanged(List<int> stack)
+        {
+            for (int i = stack.Count - 1; i >= 0; i--)
+                if (i > 0 && stack[i] > stack[i - 1]) return new ChangeResult(i, i - 1);
+
+            return null;
         }
 
-        public static List<int> ChangePosition(List<int> input)
+        public static List<int> ChangePosition(List<int> stack, int position1, int position2)
         {
-            for (int i = input.Count - 1; i >= 0; i--)
-            {
-                if (i > 0 && input[i] > input[i - 1])
-                {
-                    var temp = input[i];
-                    input[i] = input[i - 1];
-                    input[i - 1] = temp;
-
-                    return input;
-                }
-            }
-
-            return input;
+            (stack[position1], stack[position2]) = (stack[position2], stack[position1]);
+            return stack;
         }
 
-        private static int StepsNeeded(List<int> input, int steps = 0)
+        private static int StepsNeeded(List<int> stack, int steps)
         {
-            if (IsChangeNeeded(input))
+            var changes = PositionsToBeChanged(stack);
+            if (changes != null)
             {
-                input = ChangePosition(input);
+                stack = ChangePosition(stack, changes.Position1, changes.Position2);
                 steps++;
-                return StepsNeeded(input, steps);
+                return StepsNeeded(stack, steps);
             }
-            
+
             return steps;
         }
 
-        public static int StepsNeeded(List<int> input) =>
-            StepsNeeded(input, 0);
+        public static int StepsNeeded(List<int> stack) =>
+            StepsNeeded(stack, 0);
     }
 }
