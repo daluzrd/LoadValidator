@@ -7,7 +7,7 @@ namespace LoadValidator
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("LOAD VALIDATOR\n\n");
+            Console.WriteLine("============= LOAD VALIDATOR =============\n\n");
 
             var stack = new List<int>();
             var IsStackFinished = false;
